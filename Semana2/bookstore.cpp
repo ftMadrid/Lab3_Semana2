@@ -24,14 +24,6 @@ using std::stringstream;
 
 BookStore::BookStore() {}
 
-string BookStore::arrayIsbnToString(const std::array<int, 13>& isbnArray) {
-    stringstream tmp;
-    for (int digit : isbnArray) {
-        tmp << digit;
-    }
-    return tmp.str();
-}
-
 array<int, 13> BookStore::stringToIsbnArray(const string& input) {
     if (input.length() != 13) {
         throw std::invalid_argument("\n| ISBN must have 13 digits.");
@@ -53,7 +45,7 @@ void BookStore::insertBook(Book b){
 
     sort(catalogue.begin(), catalogue.end());
 
-    audit.push_front("\n| Book Added: " + b.title);
+    audit.push_front("\n| Book Added: " + b.title + " [by " + b.author + "] [" + this->getCurrentTimestamp() + "]");
 }
 
 int BookStore::searchBookByTitle(string title){
@@ -74,9 +66,9 @@ int BookStore::searchBookByTitle(string title){
     }
 
     if (result != -1) {
-        audit.push_front("\n| Search by title: " + title + " - FOUND. [" + this->getCurrentTimestamp() + "]");
+        audit.push_front("\n| Search by title: " + title + " - FOUND! [" + this->getCurrentTimestamp() + "]");
     } else {
-        audit.push_front("\n| Search by title: " + title + " - NOT FOUND. [" + this->getCurrentTimestamp() + "]");
+        audit.push_front("\n| Search by title: " + title + " - NOT FOUND! [" + this->getCurrentTimestamp() + "]");
     }
     return result;
 }
@@ -88,7 +80,7 @@ int BookStore::searchBookByISBN(string isbn){
     try {
         targetIsbn = stringToIsbnArray(isbn);
     } catch (const std::invalid_argument& e) {
-        audit.push_front("\n| Search by ISBN: Invalid format! " + string(e.what()));
+        audit.push_front("\n| Search by ISBN: Invalid format! [" + this->getCurrentTimestamp() + "]");
         return -1; // found this catch format at overflow, amazing way to check a format of this typo inge!
     }
 
@@ -112,11 +104,10 @@ int BookStore::searchBookByISBN(string isbn){
         }
     }
 
-    string timestamp = getCurrentTimestamp();
     if (resultIndexInCatalogue != -1) {
-        audit.push_front("\n| Search by ISBN: " + isbn + " FOUND! " + timestamp);
+        audit.push_front("\n| Search by ISBN: " + isbn + " FOUND! [" + this->getCurrentTimestamp() + "]");
     } else {
-        audit.push_front("\n| Search by ISBN: " + isbn + " NOT FOUND! " + timestamp);
+        audit.push_front("\n| Search by ISBN: " + isbn + " NOT FOUND! [" + this->getCurrentTimestamp() + "]");
     }
 
     return resultIndexInCatalogue;
@@ -161,12 +152,12 @@ void BookStore::showAuditLog() const {
 void BookStore::showCatalogue() const {
     cout << "\n === Book Catalogue ===\n" ln;
     if (catalogue.empty()) {
-        cout << "\n| Catalogue is empty!" ln;
+        cout << "| Catalogue is empty!" ln;
     }
     for (int i = 0; i < catalogue.size(); ++i) {
-        cout << i << ". " << catalogue[i].title << " by " << catalogue[i].author << " (ISBN: ";
+        cout << i << ". " << catalogue[i].title << " by " << catalogue[i].author << " [ISBN: ";
         for(int d : catalogue[i].isbn) cout << d;
-        cout << ")" ln;
+        cout << "]" ln;
     }
 }
 

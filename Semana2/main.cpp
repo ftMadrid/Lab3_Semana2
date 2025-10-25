@@ -84,14 +84,14 @@ int main(int argc, char *argv[])
             cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
             print "\n === SEARCH BY ISBN === \n" ln;
-            print "\n| Enter 13-digit ISBN: ";
+            print "| Enter 13-digit ISBN: ";
             getline(cin, isbnString);
 
             int index_isbn = store.searchBookByISBN(isbnString);
             if (index_isbn != -1) {
                 print "\n| Book FOUND at [" << index_isbn << "]: " << store.catalogue[index_isbn].title << " by " << store.catalogue[index_isbn].author ln;
             } else {
-                print "\n| ISBN NOT FOUND or Invalid Format: " << isbnString ln;
+                print "\n| ISBN NOT FOUND: " << isbnString ln;
             }
             break;
         }

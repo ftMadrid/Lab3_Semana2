@@ -20,6 +20,7 @@ public:
     Book(string title, string author, array<int, 13> isbn);
 
     bool operator<(const Book& other) const;
+
 };
 
 #endif // BOOK_H
