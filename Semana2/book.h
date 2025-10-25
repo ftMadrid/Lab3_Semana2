@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <array>
 
 using std::string;
 using std::array;
@@ -13,7 +14,7 @@ public:
 
     string title;
     string author;
-    array<int, 13> isbn();
+    array<int, 13> isbn{};
 
     Book();
     Book(string title, string author, array<int, 13> isbn);
